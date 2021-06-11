@@ -16,21 +16,53 @@ var promise = new Promise(function (resolve, reject) {
 // Should print out "Resolved!"
 promise.then(data => console.log(data));
 
+// Solution 2 
+var promise = new Promise(function (resolve, reject) {
+  setTimeout(resolve, 1000);
+});
+
+// Should print out "Resolved!"
+function displayResolve() {
+  console.log('Resolved!')
+}
+promise.then(displayResolve);
 
 // Challenge 3
 
 promise = new Promise(function(resolve, reject) {
-  return reject('Rejected!');
+  reject('Rejected!');
 })
 
 // Should print out "Reject!"
 promise.catch(data => console.log(data));
 
+// Solution 2
+
+promise = new Promise(function(resolve, reject) {
+  reject();
+})
+
+// Should print out "Reject!"
+function displayReject() {
+  console.log('Rejected!')
+}
+promise.catch(displayReject);
 
 // Challenge 4
 
 promise = new Promise(function (resolve, reject) {
-  return resolve('Promise has been resolved!')
+  resolve('Promise has been resolved!')
+});
+
+// Uncomment the lines below when ready
+promise.then(function() {
+  console.log('Promise has been resolved!')
+});
+console.log("I'm not the promise!");
+
+// Solution 2
+promise = new Promise(function (resolve, reject) {
+  resolve();
 });
 
 // Uncomment the lines below when ready
@@ -55,10 +87,10 @@ delay().then(sayHello);
 //
 // ADD CODE BELOW
 var secondPromise = new Promise(function(resolve, reject) {
-  return resolve('Second!');
+  resolve('Second!');
 });
 var firstPromise = new Promise(function(resolve, reject) {
-  return resolve(secondPromise);
+  resolve(secondPromise);
 });
 
 firstPromise.then(data => console.log(data));
@@ -83,7 +115,11 @@ const fakeAPICall = (i) => {
 };
 
 function getAllData() {
-  Promise.all([fakeAPICall(0), fakeAPICall(1), fakeAPICall(2)]).then(values => console.log(values));
+  const apiPromises = [fakeAPICall(0), fakeAPICall(1), fakeAPICall(2)];
+  return Promise.all(apiPromises)
+    .then(function(values) {
+      return values;
+    });
 }
 
-getAllData();
+getAllData().then(values => console.log(values));
