@@ -151,20 +151,38 @@ Words.prototype[Symbol.iterator] = function() {
   // CHALLENGE 7  
 
 function valueAndPrevIndex(array){
-
+  var index = 0;
+  var iterator = {
+    sentence: function() {
+      if (index === 0) {
+        index++;
+        return "This is the first element!";
+      }
+      var newIndex = index - 1;
+      var element = "Was found after " + newIndex;
+      index++;
+      return element;
+    }
+  }
+	return iterator;
 }
 
 const returnedSentence = valueAndPrevIndex([4,5,6])
-//console.log(returnedSentence.sentence());
-//console.log(returnedSentence.sentence());
-//console.log(returnedSentence.sentence());
+console.log(returnedSentence.sentence());
+console.log(returnedSentence.sentence());
+console.log(returnedSentence.sentence());
 
 
 //CHALLENGE 8
 
 function* createConversation(string) {
-
-
+  yield setInterval(function() {
+    if (string == "english") {
+      console.log("hello there");
+    } else {
+      console.log("gibberish");
+    }
+  }, 3000);
 }
 
 console.log(createConversation('english').next());
@@ -173,11 +191,14 @@ console.log(createConversation('english').next());
 
 //CHALLENGE 9
 function waitForVerb(noun) {
-
+	return new Promise(resolve => {
+    setTimeout(() => resolve(`${noun} barks`), 3000);
+  });
 }
 
 async function f(noun) {
-
-}
+	const sentence = await waitForVerb(noun);
+  console.log(sentence);
+}	
 
 f("dog");
